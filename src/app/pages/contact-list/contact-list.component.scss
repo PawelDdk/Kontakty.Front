@@ -1,0 +1,35 @@
+.contacts{
+    display: flex;
+    flex-direction: column;
+}
+
+table {
+    width: 100px;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+}
+
+
+.custom-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+th {
+    text-align: left;
+    color: white;
+}
+
+.upper{
+    background: #673ab7 !important;
+}
+
+.createButton {
+    margin-bottom: 8px;
+    float: right;
+    width: 100px;
+}

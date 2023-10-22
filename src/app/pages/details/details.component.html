@@ -1,0 +1,66 @@
+<div class="container">
+    <div class="form-field">
+      <mat-form-field>
+        <mat-label>First Name</mat-label>
+        <input matInput [(ngModel)]="firstName">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Last Name</mat-label>
+        <input matInput [(ngModel)]="lastName">
+      </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Email</mat-label>
+          <input matInput placeholder="pat@example.com" [formControl]="emailControl" required [(ngModel)]="email">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Set password</mat-label>
+            <input matInput [type]="hide ? 'password' : 'text'" [(ngModel)]="password">
+            <button class="showButton" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Category</mat-label>
+            <mat-select placeholder="Category" (selectionChange)="onSelectedCategory($event.value)">
+              <mat-option value="Business">Business</mat-option>
+              <mat-option value="Private">Private</mat-option>
+              <mat-option value="Other">Other</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field *ngIf="selectedCategory === 'Business'">
+            <mat-label>SubCategory</mat-label>
+            <mat-select placeholder="SubCategory" (selectionChange)="onSelectedSubCategory($event.value)">
+              <mat-option value="Boss">Boss</mat-option>
+              <mat-option value="Client">Client</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field *ngIf="selectedCategory === 'Other'">
+            <mat-label>Other</mat-label>
+            <input matInput [(ngModel)]="inputedOther" /> 
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Phone</mat-label>
+            <input matInput [(ngModel)]="phone">
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Choose a date</mat-label>
+            <input matInput [matDatepicker]="picker" [(ngModel)]="dateOfBirth">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+          <button mat-raised-button color="primary" (click)="onAddContact()">
+            <mat-icon>add</mat-icon>
+            Add
+          </button>
+
+        </div>
+</div>
