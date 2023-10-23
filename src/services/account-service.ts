@@ -7,13 +7,18 @@ import { Observable, of } from 'rxjs';
 })
 
 export class AccountService{
-    private apiUrl : string = "";
     constructor(private httpClient: HttpClient){}
     
-    login() : Observable<string>{
-        // return this.httpClient.get<string>(`${this.apiUrl}/`) 
-        return of("tekst");
-     // return "mojklucz"
+    login(email: string, password: string) : Observable<any> {
+      let request = {
+        email: email,
+        password: password
+      }
+
+      return this.httpClient.post('https://localhost:7195/login', request, {responseType: 'text'})
+    }
+
+    isLoged() : boolean {
+      return sessionStorage.getItem("token") == null ? false : true;
     }
 }
-

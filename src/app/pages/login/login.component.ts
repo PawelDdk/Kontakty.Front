@@ -10,23 +10,25 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent {
   email = new FormControl('', [Validators.required, Validators.email]);
-  hide : boolean = true;
   password = new FormControl()
+  hide : boolean = true;
+  
   constructor(private httpClient: HttpClient, private accountService : AccountService, private router: Router){}
 
   onClickLogin(){
-    this.accountService.login().subscribe(
-      (Data)=>{
-        sessionStorage.setItem("token", Data);
-        this.router.navigate(['/contact-list']);
-        //przejscie na strone
+    let userEmail = this.email.value ?? ''
+    let userPassword = this.password.value ?? ''
 
-      },
-      (error)=>{
-        console.error(error);
-      },
-      )
- }
+    let result = false;
+
+    this.accountService.login(userEmail, userPassword).subscribe(resposne => {
+        sessionStorage.setItem("token", resposne);
+        this.router.navigate(['/contact-list'])
+    },
+    error => {
+      console.error("This user not exist")
+    }) 
+  }
 
 
   getErrorMessage() {

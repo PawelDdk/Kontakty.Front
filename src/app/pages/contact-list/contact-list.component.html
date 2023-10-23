@@ -1,6 +1,8 @@
 <div class="container">
-  <button class="createButton" mat-raised-button color="primary" (click)="onCreate()">Nowy</button>
-  
+  <button *ngIf="isLoged" class="createButton" mat-raised-button color="primary" (click)="onCreate()">New</button>
+  <button *ngIf="!isLoged" class="createButton" mat-raised-button color="primary" (click)="onLogin()">Login</button>  
+  <button *ngIf="isLoged" class="createButton" mat-raised-button color="primary" (click)="onLogout()">Logout</button>  
+
     <table mat-table [dataSource]="contacts" class="mat-elevation-z8"> 
     <ng-container matColumnDef="firstName">
       <th class="upper" mat-header-cell *matHeaderCellDef>First Name</th>
@@ -42,14 +44,9 @@
       <td mat-cell *matCellDef="let contact">{{ contact.dateOfBirth }}</td>
     </ng-container>
 
-    <ng-container matColumnDef="edit">
-        <th class="upper" mat-header-cell *matHeaderCellDef>Edit</th>
-        <td mat-cell *matCellDef="let contact"><button class="custom-button" (click)="onEdit(contact.id)"><mat-icon>edit</mat-icon></button></td>
-    </ng-container>
-
     <ng-container matColumnDef="delete">
       <th class="upper" mat-header-cell *matHeaderCellDef>Delete</th>
-      <td mat-cell *matCellDef="let contact"><button class="custom-button" (click)="onDelete(contact.id)"><mat-icon>delete</mat-icon></button></td>
+      <td mat-cell *matCellDef="let contact"><button [disabled]="!isLoged" class="custom-button" (click)="onDelete(contact.id)"><mat-icon>delete</mat-icon></button></td>
     </ng-container>
   
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

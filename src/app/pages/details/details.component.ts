@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Route, Router } from '@angular/router';
 
 @Component({
@@ -9,9 +9,10 @@ import { Route, Router } from '@angular/router';
 })
 export class DetailsComponent {
   emailControl = new FormControl('', [Validators.required, Validators.email]);
+  passwordControl = new FormControl();
+
   email: string = '';
   hide : boolean = true;
-  passwordControl = new FormControl();
   inputedOther: string = '';
   firstName: string = '';
   lastName: string = '';
@@ -35,7 +36,6 @@ export class DetailsComponent {
   public onSelectedCategory(value : string) : void{
     this.selectedCategory = value;
     console.log(`category: ${this.selectedCategory}`);
-    //this.selectedCategory = (event.target as HTMLInputElement).value;
   }
 
   public onSelectedSubCategory(value: string) : void{
@@ -53,27 +53,17 @@ export class DetailsComponent {
       subcategory : this.selectedSubCategory,
       phone : this.phone,
       dateOfBirth : this.dateOfBirth,
-  }
-  this.httpClient.post<any>('https://localhost:7195/addContact', request).subscribe(response=>{
-    this.router.navigate(['/contact-list']);
-  },
-  error=>{
-    console.error(error)
-  }
-  )
-  }
-  public onCheckPhone(value: string) : void{
-    //this.
-  }
+    }
 
-  // public phoneNumberValidation(control: FormControl) :  { [key: string]: any } | null
-  // {
-  //   const value = control.value;
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${sessionStorage.getItem("token")}`
+    });
 
-  //   if(value.length > 2) {
-  //     return {customEmail: true };
-  //   }
-
-  //   return null; //If custom validator return null this means that validation passes
-  // }
+    this.httpClient.post<any>('https://localhost:7195/addContact', request, {headers}).subscribe(response=>{
+      this.router.navigate(['/contact-list']);
+    },
+    error=> {
+      console.error(error)
+    })
+  }
 }

@@ -5,11 +5,10 @@ import { ContactListComponent } from './pages/contact-list/contact-list.componen
 import { DetailsComponent } from './pages/details/details.component';
 
 const routes: Routes = [
-  { path: '',   redirectTo: '/login', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent },
+  { path: '',   redirectTo: '/contact-list', pathMatch: 'full' },
   { path: 'contact-list', component: ContactListComponent },
   { path: 'create-contact', component: DetailsComponent },
-  { path: 'edit-contact/:id', component: DetailsComponent }
+  { path: 'login', component: LoginComponent },
 ];
 
 @NgModule({

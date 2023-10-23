@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Contact } from 'src/app/models/Contact';
+import { AccountService } from 'src/services/account-service';
 
 
 @Component({
@@ -10,19 +11,15 @@ import { Contact } from 'src/app/models/Contact';
   styleUrls: ['./contact-list.component.scss']
 })
   export class ContactListComponent implements OnInit {
-  displayedColumns: string[] = ['firstName', 'lastName', 'email', 'password', 'category', 'subcategory', 'phone', 'dateOfBirth', 'edit', 'delete'];
-  endpoint = " ";
+  displayedColumns: string[] = ['firstName', 'lastName', 'email', 'password', 'category', 'subcategory', 'phone', 'dateOfBirth', 'delete'];
   contacts : Contact[] = []
+  isLoged : boolean = false;
 
-  constructor(private httpClient: HttpClient, private router: Router) {}
-
-  //pobieranie danych
-  //usuwanie -> id
-  //dodawanie 
-  //edycja 
+  constructor(private httpClient: HttpClient, private router: Router, private accountService : AccountService) {}
 
   ngOnInit(): void {
     this.getContacts();
+    this.isLoged = this.accountService.isLoged()
   }
 
   onCreate(){
@@ -35,22 +32,22 @@ import { Contact } from 'src/app/models/Contact';
     })
   }
 
-
-  onEdit(id : string){
-    console.log("edit id: " + id)
-    this.router.navigate(['/edit-contact',  id]);
-  }
-
   onDelete(id : string){
-    this.httpClient.delete<any>("https://localhost:7195/deleteContact?id=" +id).subscribe(response=>{
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${sessionStorage.getItem("token")}`
+    });
+
+    this.httpClient.delete<any>("https://localhost:7195/deleteContact?id=" +id, { headers }).subscribe(response=>{
       this.getContacts()
     })
   }
 
-  // private getData() {
-  //   this.httpClient.get<Contact[]>(this.endpoint).subscribe(response => {
-  //     this.contacts = response;
-  //   })
-  // }
+  public onLogin(){
+    this.router.navigate(['/login']);
+  }
 
+  public onLogout(){
+    sessionStorage.removeItem("token");
+    this.isLoged = this.accountService.isLoged()
+  }
 }
